@@ -15,6 +15,12 @@ export class Database {
     console.log('Hello Xfirebase Provider');
   }
 
+
+  /**
+   * user node structure
+   * 
+   * 
+   */
   register() {}
   updateUser() {}
   resign() {}
