@@ -205,24 +205,24 @@ export class Category {
      */
     get(id, successCallback, failureCallback?) {
         this.ref.child(id).once( 'value', snapshot => {
-            if ( snapshot.exists() ) {
-//                console.log('snapshot', snapshot.val());
-                successCallback( snapshot.val() );
-            }
-            else {
-//                console.log('snapshot does not exists');
-                successCallback( null );
-            }
+            if ( snapshot.exists() ) successCallback( snapshot.val() );
+            else successCallback( null );
         }, failureCallback );
     }
     /**
-     * @todo put easy options to list & filter categories.
+     * Returns whole objects of category.
+     * @note there is no sorting and filtering.
+     * 
+     * @code
+        category.gets( x => console.log(x) );
+     * @endcode
+     * 
      */
-    gets( path: string, callback ) {
-        this.ref.orderByChild( path )
-            .on( 'child_added', snapshot => {
-                callback( snapshot.val() );
-            });
+    gets( successCallback, failureCallback? ) {
+        this.ref.once( 'value', snapshot => {
+            if ( snapshot.exists() ) successCallback( snapshot.val() );
+            else successCallback( null );
+        }, failureCallback );
     }
 
 
