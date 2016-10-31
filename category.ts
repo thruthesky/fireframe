@@ -2,6 +2,11 @@
  * 
  * 
  * 
+ * @attention you can use another name of first-depth-node instead of 'category'
+ * @code below sets 'test' as it category name. @see category-test.ts
+        this.category = new Category( 'test' );
+        this.cateogry.set({...});
+ * @endcode
  * 
  * @code
         this.category.id('banana').name('Banana').title('This is Banana').create( () => {}, e => { if ( e ) alert(e); });
@@ -83,6 +88,17 @@
     new Category().set('id', 'banana').set('name', 'banana').set('title', '234').create( x => {}, e => console.log(e) );
     new Category().set('id', 'cherry').set('name', 'cherry').set('title', '234').create( x => {}, e => console.log(e) );
     new Category().set('id', 'dragonfruit').set('name', 'dragonfruit').set('title', '567').create( x => {}, e => console.log(e) );
+ * @endcode
+ * 
+ * 
+ * @note To access category reference
+ * @code
+ *      category.ref;
+ * @endcocde
+ *  
+ * @note To remove whole category object
+ * @code
+ *      category.ref.remove();
  * @endcode
  */
 import { Database } from '../fireframe/database';
@@ -184,7 +200,7 @@ export class Category {
      *      When it is not deleted, failureCallback() will be called.
      *      When the category does not exist, failreCallback() with error message will be called.
      */
-    delete( id: string, successCallback, failureCallback ) {
+    delete( id: string, successCallback, failureCallback? ) {
         this.get( id, s => {
             if ( s ) {
                 this .ref .child( id ) .remove()
