@@ -12,6 +12,11 @@ export class Database {
   constructor() {
     console.log('Hello Xfirebase Provider');
   }
+  /**
+   * Connects to firebase.
+   * 
+   * @note it only connects one time.
+   */
   connect() {
     if ( this.db ) return;
     let config = {

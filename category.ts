@@ -2,7 +2,12 @@
  * 
  * 
  * 
+ * 
+ * @code
+        this.category.id('banana').name('Banana').title('This is Banana').create( () => {}, e => { if ( e ) alert(e); });
+ * @endcode
  * @Warning when you create or update a category,
+ * 
  *  you will not get the created or updated data
  *  if you call immediately after the create() or update() code
  *  because it is ASYNC call.
@@ -88,17 +93,24 @@ export interface CATEGORY {
     description: string;
 }
 export class Category {
+    db: Database;
     ref: firebase.database.Reference;
     private data : CATEGORY = <CATEGORY> {};
 
-    constructor() {
-        this.ref = new Database().child( 'category' );
+    constructor( category_name = 'category') {
+        this.db = new Database();
+        this.db.connect();
+        this.ref = this.db.child( category_name );
     }
 
     set( property: string, value: string ) : Category {
         this.data[ property ] = value;
         return this;
     }
+    id( id: string ) { return this.set('id', id); }
+    name( name: string ) { return this.set('name', name); }
+    title( title: string ) { return this.set('title', title); }
+    description( description: string ) { return this.set('description', description); }
     /**
      * 
      * @code create a new category
@@ -129,7 +141,7 @@ export class Category {
                     //.push()
                     .set( this.data, r => {
                         this.clear();
-                        console.log(r);
+                        //console.log(r);
                         successCallback( r );
                     } )
                     .then(function() {
