@@ -7,10 +7,11 @@ import * as firebase from 'firebase';
 
 export class Database {
 
+  private static __connect: boolean = false;
   private static __db: firebase.database.Database = null;
 
   constructor() {
-    console.log('Hello Xfirebase Provider');
+    this.connect();
   }
   /**
    * Connects to firebase.
@@ -18,7 +19,11 @@ export class Database {
    * @note it only connects one time.
    */
   connect() {
-    if ( this.db ) return;
+    if ( Database.__connect ) {
+      console.log("Database connection already maid...");
+      return;
+    }
+    Database.__connect = true;
     let config = {
       apiKey: "AIzaSyCKGAejpeOxxSHELi_Xbo2UdRa8xQPmipU",
       authDomain: "test-ec3e3.firebaseapp.com",
@@ -92,11 +97,6 @@ export class Database {
   getUsers() {}
   
 
-  createPost() {}
-  updatePost() {}
-  deletePost() {}
-  getPost() {}
-  getPosts() {}
 
   createComment() {}
   updateComment() {}

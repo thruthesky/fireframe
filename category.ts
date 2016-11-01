@@ -115,7 +115,6 @@ export class Category {
 
     constructor( category_name = 'category') {
         this.db = new Database();
-        this.db.connect();
         this.ref = this.db.child( category_name );
     }
 
@@ -145,6 +144,8 @@ export class Category {
      * @endcode
      */
     create( successCallback, failureCallback ) {
+        if ( this.data.id === void 0 ) return failureCallback('input id');
+        if ( this.data.name === void 0 ) return failureCallback('input name');
         let data = this.data;
         let id = data.id;
         this.get( id, x => { // see if category id exists.
@@ -253,5 +254,11 @@ export class Category {
         }, failureCallback );
     }
 
+    /**
+     * Removes the complete location
+     */
+    destroy( callback? ) {
+        this.ref.remove( callback );
+    }
 
 }
