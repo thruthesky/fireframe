@@ -6,6 +6,22 @@ Firebase Framework
 
 * create more tests. 30 tests on category, 100 tests on post.
 
+
+# TEST
+
+````
+    new CategoryTest().test(
+      () => {
+        console.log("CategoryTest End");
+        new PostTest().test(
+          () => {
+            console.log('PostTest End');
+          }
+        )
+      }
+    );
+````
+
 # Data Structure
 
 ## User Data
