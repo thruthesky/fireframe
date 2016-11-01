@@ -102,7 +102,7 @@
  * @endcode
  */
 import { Database } from '../fireframe/database';
-export interface CATEGORY {
+export interface CategoryData {
     id: string;
     name: string;
     title: string;
@@ -111,7 +111,7 @@ export interface CATEGORY {
 export class Category {
     db: Database;
     ref: firebase.database.Reference;
-    private data : CATEGORY = <CATEGORY> {};
+    private data : CategoryData = <CategoryData> {};
 
     constructor( category_name = 'category') {
         this.db = new Database();
@@ -213,7 +213,7 @@ export class Category {
         }, failureCallback);
     }
     clear() : Category {
-        this.data = <CATEGORY> {};
+        this.data = <CategoryData> {};
         return this;
     }
 
