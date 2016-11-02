@@ -25,11 +25,11 @@ export class Database {
     }
     Database.__connect = true;
     let config = {
-      apiKey: "AIzaSyCKGAejpeOxxSHELi_Xbo2UdRa8xQPmipU",
-      authDomain: "test-ec3e3.firebaseapp.com",
-      databaseURL: "https://test-ec3e3.firebaseio.com",
-      storageBucket: "test-ec3e3.appspot.com",
-      messagingSenderId: "55749236444"
+      apiKey: "AIzaSyDgVNWHWVRogTbKvTftNoNv7cSmtFaAfz0",
+    authDomain: "fir-app-f2d67.firebaseapp.com",
+    databaseURL: "https://fir-app-f2d67.firebaseio.com",
+    storageBucket: "fir-app-f2d67.appspot.com",
+    messagingSenderId: "552188619868"
     };
     firebase.initializeApp(config);
     this.db = firebase.database();
