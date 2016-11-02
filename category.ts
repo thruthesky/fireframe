@@ -108,6 +108,12 @@ export interface CategoryData {
     title: string;
     description: string;
 }
+export let categoryData = {
+    id: '',
+    name: '',
+    title: '',
+    description: ''
+  };
 export class Category {
     db: Database;
     ref: firebase.database.Reference;
@@ -255,7 +261,7 @@ export class Category {
     }
 
     /**
-     * Removes the complete location
+     * Removes the whole category storage
      */
     destroy( callback? ) {
         this.ref.remove( callback );

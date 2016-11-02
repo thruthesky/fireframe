@@ -1,3 +1,6 @@
+/**
+ * @see test/post-test.ts for test and sample codes.
+ */
 import { Database } from './database';
 import { Category } from './category';
 export interface PostData {
