@@ -124,6 +124,9 @@ export class Category {
         this.ref = this.db.child( storage_path );
     }
 
+    getData() : CategoryData {
+        return this.data;
+    }
     set( property: string, value: string ) : Category {
         this.data[ property ] = value;
         return this;
@@ -165,16 +168,13 @@ export class Category {
             else {  // if no, create one.
                 this.ref
                     .child( this.data.id )
-                    //.push()
                     .set( this.data, r => {
                         this.clear();
-                        //console.log(r);
-                        successCallback( r );
-                    })
-                    .then(function() {
-                        // Synchronization success
+                        if ( r ) failureCallback( r );
+                        else successCallback( r );
                     })
                     .catch(function(error) {
+                        this.clear();
                         failureCallback('Synchronization failed');
                     });
             }
