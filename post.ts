@@ -45,7 +45,10 @@ export class Post {
         this.data[ property ] = value;
         return this;
     }
-
+    sets( data: PostData ) : Post {
+        this.data = data;
+        return this;
+    }
     key( key: string ) { return this.set('key', key); }
     category_id( category_id: string ) { return this.set('category_id', category_id); }
     user_id( user_id: string ) { return this.set('user_id', user_id); }

@@ -5,6 +5,7 @@ Firebase Framework
 # To Do List
 
 * create more tests. 30 tests on category, 100 tests on post.
+* create counts on each class. category.count(), post.count()
 
 
 # TEST

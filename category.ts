@@ -119,9 +119,9 @@ export class Category {
     ref: firebase.database.Reference;
     private data : CategoryData = <CategoryData> {};
 
-    constructor( category_name = 'category') {
+    constructor( storage_path = 'category') {
         this.db = new Database();
-        this.ref = this.db.child( category_name );
+        this.ref = this.db.child( storage_path );
     }
 
     set( property: string, value: string ) : Category {
@@ -170,7 +170,7 @@ export class Category {
                         this.clear();
                         //console.log(r);
                         successCallback( r );
-                    } )
+                    })
                     .then(function() {
                         // Synchronization success
                     })
