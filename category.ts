@@ -128,6 +128,10 @@ export class Category {
         this.data[ property ] = value;
         return this;
     }
+    sets( data: CategoryData ) : Category {
+        this.data = data;
+        return this;
+    }
     id( id: string ) { return this.set('id', id); }
     name( name: string ) { return this.set('name', name); }
     title( title: string ) { return this.set('title', title); }

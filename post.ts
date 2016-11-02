@@ -19,6 +19,7 @@ export interface PostData {
     no_of_comments: number;
     no_of_files: number;
 }
+
 export class Post {
     private db: Database;
     private category: Category;
