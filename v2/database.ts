@@ -84,4 +84,95 @@ export class Database {
         this.data = data;
         return this;
     }
+
+    /**
+     * 
+     * @code create a new category
+     * 
+        let category = new Category();
+        category
+        .set('id', 'help')
+        .set('name', 'Help')
+        .set('title', 'help forum')
+        .set('description', 'This is help forum')
+        .create( s => { // success
+        }, e => { // error
+            alert( e );
+        });
+        
+     * @endcode
+     */
+    create( successCallback, failureCallback ) {
+        if ( this.data.key === void 0 ) return failureCallback('input key');
+        let data = this.data;
+        let key = data.key;
+        delete data.key;
+        this.get( key, x => { // see if key exists.
+            if ( x ) { // if yes, error.
+                failureCallback( 'key exists' );
+            }
+            else {  // if no, create one.
+                this.ref
+                    .child( key )
+                    .set( this.data, r => {
+                        this.clear();
+                        if ( r ) failureCallback( r );
+                        else successCallback( r );
+                    })
+                    .catch(function(error) {
+                        this.clear();
+                        failureCallback('Synchronization failed');
+                    });
+            }
+        });
+    }
+
+    clear() {
+        this.data = {};
+        return this;
+    }
+
+    /**
+     * 
+     * Returns value of the category through successCallback's parameta
+     * 
+     * @Warning null will be delivered to successCallback when snapshot values does not exists.
+     *  which means, even if there is no node in db, it will still success with null.
+     * 
+     * @code get a category value
+            let category = new Category();
+            category.get('qna', x => {
+            console.log(x);
+            });
+     * @endcode
+     */
+    get(id, successCallback, failureCallback?) {
+        this.ref.child(id).once( 'value', snapshot => {
+            if ( snapshot.exists() ) successCallback( snapshot.val() );
+            else successCallback( null );
+        }, failureCallback );
+    }
+    /**
+     * Returns whole objects of category.
+     * @note there is no sorting and filtering.
+     * 
+     * @code
+        category.gets( x => console.log(x) );
+     * @endcode
+     * 
+     */
+    gets( successCallback, failureCallback? ) {
+        this.ref.once( 'value', snapshot => {
+            if ( snapshot.exists() ) successCallback( snapshot.val() );
+            else successCallback( null );
+        }, failureCallback );
+    }
+
+    /**
+     * Removes the whole category storage
+     */
+    destroy( callback? ) {
+        this.ref.remove( callback );
+    }
+
 }
