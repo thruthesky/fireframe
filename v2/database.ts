@@ -79,4 +79,9 @@ export class Database {
         this.data[ property ] = value;
         return this;
     }
+
+    sets( data ) {
+        this.data = data;
+        return this;
+    }
 }
