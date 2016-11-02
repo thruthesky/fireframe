@@ -12,7 +12,6 @@ export class PostTest {
     }
 
 
-
     test( callback ) {
         console.log("PostTest::test()");
         this.removeTest( x =>
