@@ -61,23 +61,25 @@ export class CategoryRandyTest {
         this. category.destroy();    
         this.category.id("One").name("Two").title("Three")
            .create( s => {                    
-                if ( s ) t.fail('Test gets() :: fail to create a category: ' + s ); 
-                else t.pass("Success on creating category")                           
+                if ( s ) t.fail('Test gets() :: fail to create a category: ' + s );           
+                else { t.pass("Success on creating category")   
+                    this.category.gets( x =>{
+                    if( x ){
+                        if( x.One.name === "Two" && x.One.title === "Three") t.pass("Test gets() :: get the correct data");
+                        else t.fail ("Fail test gets()::should get the correct data");
+                        callback();
+                    }
+                    else {
+                        t.fail("Fail test gets():: Should get the created data instead, it returns null");
+                        callback();
+                    }    
+             });
+                }                        
             }, e => {
                 t.fail("Error creating category :: "+ e )          
             });   
 
-            this.category.gets( x =>{
-                if( x ){
-                    if( x.One.name === "Two" && x.One.title === "Three") t.pass("Test gets() :: get the correct data");
-                    else t.fail ("Fail test gets()::should get the correct data");
-                    callback();
-                }
-                else {
-                    t.fail("Fail test gets():: Should get the created data instead, it returns null");
-                    callback();
-                }    
-             });
+            
 
     }
 
