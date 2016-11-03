@@ -19,6 +19,7 @@ export interface PostData {
     no_of_comments: number;
     no_of_files: number;
 }
+
 export class Post {
     private db: Database;
     private category: Category;
@@ -27,6 +28,12 @@ export class Post {
 
     /**
      * 
+     * @code How to use Post class with islated storage path. If you do this, the storage pash is separated from others.
+     *      ; 아래와 같이 하면 독립된 Post class 공간을 생성해서 사용 할 수 있다.
+     *      ; 이렇게 하면 다른 storage path 와 분리되므로 관리가 편해 질 수 있다.
+     *      ; 단, 카테고리는 생성을 해야 한다.
+     *     question: Post = new Post( 'questions' )
+     * @endcode
      * 
      * @code 테스트를 위해서 임의의 경로를 지정 할 수 있다. 이렇게 하면 실제 데이터를 건드리지 않는다.
      *      To test, you can input temporary path. If so, real data will not be changed.
@@ -44,7 +51,10 @@ export class Post {
         this.data[ property ] = value;
         return this;
     }
-
+    sets( data: PostData ) : Post {
+        this.data = data;
+        return this;
+    }
     key( key: string ) { return this.set('key', key); }
     category_id( category_id: string ) { return this.set('category_id', category_id); }
     user_id( user_id: string ) { return this.set('user_id', user_id); }

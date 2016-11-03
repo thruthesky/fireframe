@@ -119,13 +119,20 @@ export class Category {
     ref: firebase.database.Reference;
     private data : CategoryData = <CategoryData> {};
 
-    constructor( category_name = 'category') {
+    constructor( storage_path = 'category') {
         this.db = new Database();
-        this.ref = this.db.child( category_name );
+        this.ref = this.db.child( storage_path );
     }
 
+    getData() : CategoryData {
+        return this.data;
+    }
     set( property: string, value: string ) : Category {
         this.data[ property ] = value;
+        return this;
+    }
+    sets( data: CategoryData ) : Category {
+        this.data = data;
         return this;
     }
     id( id: string ) { return this.set('id', id); }
@@ -161,16 +168,13 @@ export class Category {
             else {  // if no, create one.
                 this.ref
                     .child( this.data.id )
-                    //.push()
                     .set( this.data, r => {
                         this.clear();
-                        //console.log(r);
-                        successCallback( r );
-                    } )
-                    .then(function() {
-                        // Synchronization success
+                        if ( r ) failureCallback( r );
+                        else successCallback( r );
                     })
                     .catch(function(error) {
+                        this.clear();
                         failureCallback('Synchronization failed');
                     });
             }

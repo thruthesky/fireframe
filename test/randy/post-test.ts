@@ -1,6 +1,6 @@
-import { Test as t } from './test';
-import { Post, PostData } from '../post';
-import { Category } from '../category';
+import { Test as t } from '../test';
+import { Post, PostData } from '../../post';
+import { Category } from '../../category';
 export class PostTest {
     post: Post; // Post instance with temporary post path.
     posts: Array<PostData>;
