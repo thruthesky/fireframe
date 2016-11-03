@@ -27,11 +27,11 @@ export class CategoryTest {
          console.log("Test :: Creating same Category");
           this.category.id("Hero").name("Marvels").title("Avengers")
             .create(s=>{            
-                t.fail("Success creating same category: server says" + s);
+                t.fail("Success creating same category: " + s);
                 callback();
             },
             e=>{
-                t.pass("Not able to create same category::"+ e);
+                t.pass("Same category not created::"+ e);
                 callback();
             });
     }
@@ -49,4 +49,6 @@ export class CategoryTest {
                 callback();
           });
     }
+
+    
 }
