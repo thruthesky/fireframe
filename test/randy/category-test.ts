@@ -24,7 +24,9 @@ export class CategoryRandyTest {
                 () =>  this.createTest(          
                     () => this.createSameCategoryTest( 
                        () => this.testgets(
-                           () => this.testget(callback)
+                           () => this.testget(
+                               () => this.testDelete(callback)
+                            )
                         )
                     )
                 ) 
@@ -78,11 +80,35 @@ export class CategoryRandyTest {
              });
                 }                        
             }, e => {
-                t.fail("Error creating category :: "+ e )          
+                t.fail("Error creating category :: "+ e )  
+                callback();        
             });   
     }
 
 
+
+    testDelete(callback){
+      
+        this.category.destroy();    
+        this.category.id("Del").name("Delete").title("Deleting test")
+          .create( s => {                    
+                if ( s ){  t.fail("fail creating del category " )}
+                else{
+                    t.pass('Test delete() :: Success on creating del  category: ');  
+                    this.category.delete("Del",s=> {
+                         t.pass('Test delete() :: Success on deleting del  category: ');  
+                          callback(); 
+                    },e=>{
+                        t.fail("Test delete() :: fail deleting del category" );
+                         callback(); 
+                    }); 
+                     
+                }                                  
+            }, e => {
+                t.fail("Test delete() fail:: del category not created : "+ e )   
+                 callback();        
+            });   
+    }
     
     testget(callback){
         this. category.destroy();    
@@ -93,12 +119,15 @@ export class CategoryRandyTest {
                     this.category.get( "Two", 
                     s =>{ 
                           if(s){
-                              if(s.name === "Four") t.pass("Test get() :: success on getting correct data");  
+                              if(s.name === "Four") {
+                                 t.pass("Test get() :: success on getting correct data"); 
+                                 callback();
+                              }
+                               
                           }else{
                               t.fail("Test get():: should return object instead, but it returns "+ s);
-                          }    
-
-                          callback();                     
+                              callback();
+                          }                                             
                     },
                     e =>{
                         t.fail("Test get():: fail to get data on server")
