@@ -2,18 +2,26 @@ import { Test as t } from '../test';
 import { Post, PostData } from '../../post';
 import { Category, CategoryData } from '../../category';
 //import * as firebase from 'firebase';
-//import { Database } from '../fireframe/database';
+import { Database } from '../../database';
 export class CategoryRandyTest {
     post: Post; // Post instance with temporary post path.
     posts: Array<PostData>;
     category: Category;
 
 
-    path_category: string = 'test-randy-category';
-    path_post: string = 'test-randy-post';
+    db: Database;
+    ref: firebase.database.Reference;
+    private data : CategoryData = <CategoryData> {};
 
-   constructor() {
-        this.post = new Post( this.path_post, this.path_category );
+    
+
+
+    path_category: string = 'test-randy-category';
+ 
+
+   constructor( storage_path = 'test-randy-category') {
+        this.db = new Database();
+        this.ref = this.db.child( storage_path );   
         this.category = new Category( this.path_category );
     }
 
@@ -25,7 +33,11 @@ export class CategoryRandyTest {
                     () => this.createSameCategoryTest( 
                        () => this.testgets(
                            () => this.testget(
-                               () => this.testDelete(callback)
+                               () => this.testDelete(
+                                   () => this.testDeleteNotExist(
+                                       () => this.testUpdate(callback)
+                                    )
+                                )
                             )
                         )
                     )
@@ -48,6 +60,9 @@ export class CategoryRandyTest {
     }
 
 
+
+
+
     createTest(callback){
         console.log("Test :: Creating new Category");
         this.category.id("Hero").name("Marvels").title("Avengers")
@@ -61,6 +76,28 @@ export class CategoryRandyTest {
           });
     }
 
+    testUpdate(callback){
+        //destroy category first
+             this.ref.remove();
+            // create a dummy data  
+                this.ref
+                    .child("dummy")
+                    .set( {name : "Idummy", title : "I am dummy" }, r => {
+                      if(r)  console.log("Test update() :: fail on creating dummy data test not possible");
+                      else console.info("dummy data created");
+
+                    })
+                    .catch(function(error) {
+                       console.log("Test update() :: fail on creating dummy data test not possible"); 
+                       callback();                  
+                    });
+                //then  if creation is success update with framework code
+                    //get the snapshot then compare 
+
+
+    }
+    
+
     testgets(callback){
         this. category.destroy();    
         this.category.id("One").name("Two").title("Three")
@@ -68,16 +105,16 @@ export class CategoryRandyTest {
                 if ( s ) t.fail('Test gets() :: fail to create a category: ' + s );           
                 else { t.pass("Success on creating category")   
                     this.category.gets( x =>{
-                    if( x ){
-                        if( x.One.name === "Two" && x.One.title === "Three") t.pass("Test gets() :: get the correct data");
-                        else t.fail ("Fail test gets()::should get the correct data");
-                        callback();
-                    }
-                    else {
-                        t.fail("Fail test gets():: Should get the created data instead, it returns null");
-                        callback();
-                    }    
-             });
+                        if( x ){
+                            if( x.One.name === "Two" && x.One.title === "Three") t.pass("Test gets() :: get the correct data");
+                            else t.fail ("Fail test gets()::should get the correct data");
+                            callback();
+                        }
+                        else {
+                            t.fail("Fail test gets():: Should get the created data instead, it returns null");
+                            callback();
+                        }    
+                    });
                 }                        
             }, e => {
                 t.fail("Error creating category :: "+ e )  
@@ -86,23 +123,36 @@ export class CategoryRandyTest {
     }
 
 
+    
+
+
+    testDeleteNotExist(callback){
+         this.category.delete("NonExistingId",s=> { 
+             t.fail('Test delete() fail::should not delete: non existing category ');  
+            callback(); 
+        },e=>{
+            t.pass("Test delete() :: deleting non existing category : "+ e );
+            callback(); 
+        });  
+
+    }
 
     testDelete(callback){
       
+
         this.category.destroy();    
         this.category.id("Del").name("Delete").title("Deleting test")
           .create( s => {                    
                 if ( s ){  t.fail("fail creating del category " )}
                 else{
-                    t.pass('Test delete() :: Success on creating del  category: ');  
-                    this.category.delete("Del",s=> {
-                         t.pass('Test delete() :: Success on deleting del  category: ');  
+                    t.pass('Test delete() :: Success on creating del  category: '); 
+                     this.category.delete("Del", s => {
+                     t.pass('Test delete() :: Success on deleting del  category: '); 
                           callback(); 
-                    },e=>{
+                    }, e =>{
                         t.fail("Test delete() :: fail deleting del category" );
                          callback(); 
-                    }); 
-                     
+                    });                   
                 }                                  
             }, e => {
                 t.fail("Test delete() fail:: del category not created : "+ e )   
