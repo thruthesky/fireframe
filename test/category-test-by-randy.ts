@@ -12,10 +12,8 @@ export class CategoryTestByRandy {
         console.log('CategoryTestByRandy::test() begins');
         this.category.destroy( () => this.createCategories( () => 
             this.createCategories( () => this.createCategories( () =>
-                this.countCategories( () =>
-                    this.deleteCategory( callback )
-                )
-        ))));
+                this.countCategories( () =>this.deleteCategory( callback )                              
+        )))));
     }
 
     createCategories( callback ) {
